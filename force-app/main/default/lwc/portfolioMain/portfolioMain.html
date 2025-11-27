@@ -1,0 +1,268 @@
+<template>
+  <div class="main-wrapper">
+    <div class="hero-section">
+      <div
+        class="section-wrapper slds-grid slds-wrap slds-grid_vertical-align-center"
+      >
+        <div
+          class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 hero-content"
+        >
+          <h1 class="hero-title">
+            Hi, I'm <br />
+            <span class="gradient-text">{userName}</span>
+          </h1>
+
+          <h2 class="hero-subtitle">
+            &lt; <span class="gradient-text">{currentText}</span
+            ><span class="cursor">|</span> /&gt;
+          </h2>
+
+          <template if:true={location}>
+            <p class="location-text">
+              <lightning-icon
+                icon-name="utility:checkin"
+                size="x-small"
+                variant="inverse"
+                class="slds-m-right_small"
+              ></lightning-icon>
+              Visiting from {location}
+            </p>
+          </template>
+
+          <p class="bio-text">{bio}</p>
+
+          <div class="btn-group">
+            <a href={resumeUrl} target="_blank"
+              ><button class="btn-primary">Download Resume</button></a
+            >
+          </div>
+        </div>
+
+        <div
+          class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-text-align_center"
+        >
+          <div class="profile-img-container">
+            <img src={profileImageUrl} class="profile-img" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-wrapper">
+      <h2 class="section-title">Technical Arsenal</h2>
+      <div class="title-underline"></div>
+
+      <div
+        class="slds-grid slds-wrap slds-gutters_large slds-grid_align-center"
+      >
+        <template for:each={skills} for:item="skill">
+          <div
+            key={skill.Id}
+            class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_large"
+          >
+            <div class="skill-card">
+              <lightning-icon
+                icon-name={skill.Icon_Name__c}
+                size="medium"
+                variant="inverse"
+                style="
+                  background: rgba(255, 255, 255, 0.1);
+                  padding: 10px;
+                  border-radius: 12px;
+                "
+              ></lightning-icon>
+              <div class="skill-name">{skill.Name}</div>
+              <div
+                class="slds-text-body_small slds-text-color_inverse-weak slds-m-bottom_small"
+              >
+                {skill.Type__c}
+              </div>
+              <div class="bar-bg">
+                <div class="bar-fill" style={skill.barStyle}></div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <div class="section-wrapper stats-container">
+      <template if:true={trailheadStats}>
+        <div
+          class="slds-grid slds-wrap slds-grid_align-center slds-grid_vertical-align-center"
+        >
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 stat-item slds-p-vertical_medium"
+          >
+            <lightning-icon
+              icon-name="custom:custom48"
+              size="large"
+              variant="inverse"
+              class="slds-m-bottom_small"
+            ></lightning-icon>
+            <div class="stat-val">{trailheadStats.Rank__c}</div>
+            <div class="stat-lbl">CURRENT RANK</div>
+          </div>
+
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 stat-item slds-p-vertical_medium"
+          >
+            <lightning-icon
+              icon-name="standard:reward"
+              size="large"
+              variant="inverse"
+              class="slds-m-bottom_small"
+            ></lightning-icon>
+            <div class="stat-val">{trailheadStats.Total_Badges__c}</div>
+            <div class="stat-lbl">BADGES EARNED</div>
+          </div>
+
+          <div
+            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 stat-item slds-p-vertical_medium"
+          >
+            <lightning-icon
+              icon-name="standard:metrics"
+              size="large"
+              variant="inverse"
+              class="slds-m-bottom_small"
+            ></lightning-icon>
+            <div class="stat-val">{trailheadStats.Total_Points__c}</div>
+            <div class="stat-lbl">TOTAL POINTS</div>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class="section-wrapper">
+      <h2 class="section-title">Featured Work</h2>
+      <div class="title-underline"></div>
+
+      <div class="filter-container slds-text-align_center slds-m-bottom_large">
+        <button
+          class="filter-btn active"
+          data-filter="All"
+          onclick={handleFilter}
+        >
+          All
+        </button>
+        <button class="filter-btn" data-filter="LWC" onclick={handleFilter}>
+          LWC
+        </button>
+        <button class="filter-btn" data-filter="Apex" onclick={handleFilter}>
+          Apex
+        </button>
+        <button
+          class="filter-btn"
+          data-filter="Integration"
+          onclick={handleFilter}
+        >
+          Integration
+        </button>
+      </div>
+
+      <div class="slds-grid slds-wrap slds-gutters_large">
+        <template for:each={filteredProjects} for:item="proj">
+          <div
+            key={proj.Id}
+            class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_large fade-in"
+          >
+            <div class="project-card">
+              <div class="project-content">
+                <h3 class="project-title">{proj.Name}</h3>
+                <div class="slds-m-bottom_medium">
+                  <template for:each={proj.techStack} for:item="tech">
+                    <span key={tech} class="tech-tag">{tech}</span>
+                  </template>
+                </div>
+                <div class="project-desc">
+                  <lightning-formatted-rich-text
+                    value={proj.Description__c}
+                  ></lightning-formatted-rich-text>
+                </div>
+                <div class="slds-m-top_auto">
+                  <button
+                    class="btn-primary"
+                    style="font-size: 0.8rem; padding: 10px 24px"
+                    onclick={handleRepoClick}
+                    data-url={proj.Repository_URL__c}
+                  >
+                    View Code
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <div class="section-wrapper">
+      <h2 class="section-title">Experience</h2>
+      <div class="title-underline"></div>
+      <div class="timeline">
+        <template for:each={workHistory} for:item="job">
+          <div key={job.id} class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-role">{job.role}</div>
+            <div class="timeline-date">{job.company} | {job.duration}</div>
+            <p class="timeline-desc">{job.description}</p>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <div class="contact-section">
+      <h2 class="section-title">Let's Connect</h2>
+      <div class="title-underline"></div>
+
+      <div class="contact-card">
+        <div class="slds-grid slds-gutters slds-wrap">
+          <div class="slds-col slds-size_1-of-2">
+            <label class="custom-label">First Name</label>
+            <lightning-input
+              variant="label-hidden"
+              name="firstName"
+              class="input-field"
+              onchange={handleFormChange}
+            ></lightning-input>
+          </div>
+
+          <div class="slds-col slds-size_1-of-2">
+            <label class="custom-label">Last Name</label>
+            <lightning-input
+              variant="label-hidden"
+              name="lastName"
+              class="input-field"
+              onchange={handleFormChange}
+            ></lightning-input>
+          </div>
+
+          <div class="slds-col slds-size_1-of-1">
+            <label class="custom-label">Email</label>
+            <lightning-input
+              variant="label-hidden"
+              name="email"
+              class="input-field"
+              onchange={handleFormChange}
+            ></lightning-input>
+          </div>
+
+          <div class="slds-col slds-size_1-of-1">
+            <label class="custom-label">Message</label>
+            <lightning-textarea
+              variant="label-hidden"
+              name="message"
+              class="input-field"
+              onchange={handleFormChange}
+            ></lightning-textarea>
+          </div>
+        </div>
+        <div class="slds-text-align_center slds-m-top_medium">
+          <button class="btn-primary" onclick={handleContactSubmit}>
+            Send Message
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
