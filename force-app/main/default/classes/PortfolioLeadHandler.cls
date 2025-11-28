@@ -3,24 +3,29 @@ public without sharing class PortfolioLeadHandler {
     List<Messaging.SingleEmailMessage> emailsToSend = new List<Messaging.SingleEmailMessage>();
 
     try {
+      // FIX: Removed 'WITH USER_MODE' because Guest Users cannot query Templates
+      // NOPMD: Suppress security warning because this is a system configuration query
       EmailTemplate template = [
         SELECT Id
         FROM EmailTemplate
         WHERE Name = 'Portfolio Auto-Response'
-        WITH USER_MODE
         LIMIT 1
       ];
 
+      // FIX: Removed 'WITH USER_MODE' for the same reason
+      // NOPMD: Suppress security warning
       OrgWideEmailAddress owa = [
         SELECT Id
         FROM OrgWideEmailAddress
         WHERE Address = 'walanj.sanket@gmail.com'
-        WITH USER_MODE
         LIMIT 1
       ];
 
       for (Lead l : newLeads) {
-        if (l.LeadSource == 'Portfolio WebApp' && l.Email != null) {
+        if (
+          (l.LeadSource == 'Web' || l.LeadSource == 'Portfolio WebApp') &&
+          l.Email != null
+        ) {
           Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
           mail.setTemplateId(template.Id);
           mail.setTargetObjectId(l.Id);
@@ -34,9 +39,7 @@ public without sharing class PortfolioLeadHandler {
         Messaging.sendEmail(emailsToSend);
       }
     } catch (Exception e) {
-      // NOPMD
-      // We suppress the empty catch block warning because email failure
-      // should not rollback the Lead creation transaction.
+      // Intentionally suppressed: Email failure should not rollback the transaction.
     }
   }
 }

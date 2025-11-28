@@ -42,12 +42,18 @@ public without sharing class PortfolioController {
       newLead.FirstName = firstName;
       newLead.LastName = lastName;
       newLead.Email = email;
-      newLead.Company = company != null ? company : 'Portfolio Visitor';
-      newLead.Description = message;
-      newLead.LeadSource = 'Portfolio WebApp';
 
-      // FIX: Removed USER_MODE to allow Guest Users to insert records
-      // NOPMD: Suppressing CRUD check for public lead generation form
+      // FIX: Check for blank string, not just null
+      if (String.isBlank(company)) {
+        newLead.Company = 'Portfolio Visitor';
+      } else {
+        newLead.Company = company;
+      }
+
+      newLead.Description = message;
+      newLead.LeadSource = 'Web'; // Changed to standard picklist value to avoid "Bad Value" errors
+
+      // NOPMD: Allow Guest User insert
       insert newLead;
     } catch (Exception e) {
       throw new AuraHandledException('Error capturing lead: ' + e.getMessage());
