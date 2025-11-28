@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningMessageChannel xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>PortfolioFilter</masterLabel>
+    <isExposed>true</isExposed>
+    <description
+  >Channel to filter projects based on selected skills</description>
+    <lightningMessageFields>
+        <fieldName>filterType</fieldName>
+        <description
+    >The tech stack name to filter by (e.g., LWC, Apex)</description>
+    </lightningMessageFields>
+</LightningMessageChannel>

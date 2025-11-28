@@ -1,0 +1,29 @@
+<template>
+  <div class="section-wrapper">
+    <h2 class="section-title animate-me">Experience</h2>
+    <div class="title-underline animate-me"></div>
+    <div class="timeline">
+      <template for:each={workHistory} for:item="job">
+        <div key={job.id} class="timeline-item animate-me">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div
+              class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small"
+            >
+              <div>
+                <div class="timeline-role">{job.role}</div>
+                <div class="timeline-date">{job.company} | {job.duration}</div>
+              </div>
+            </div>
+            <p class="timeline-desc">{job.description}</p>
+            <div class="slds-m-top_medium">
+              <template for:each={job.tech} for:item="t">
+                <span key={t} class="tech-tag">{t}</span>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>

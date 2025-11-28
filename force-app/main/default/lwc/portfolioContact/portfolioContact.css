@@ -1,0 +1,135 @@
+:host {
+  --primary-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --bg-card: #1e293b;
+  --text-main: #f8fafc;
+}
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+.title-underline {
+  width: 60px;
+  height: 4px;
+  background: var(--primary-gradient);
+  margin: 0 auto 4rem auto;
+  border-radius: 4px;
+}
+.contact-section {
+  background: #0b1120;
+  padding: 6rem 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.contact-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+.custom-label {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+  letter-spacing: 0.5px;
+}
+.input-field {
+  color: white !important;
+  --slds-c-input-color-background: #1e293b;
+  --slds-c-textarea-color-background: #1e293b;
+  --slds-c-input-color-border: #475569;
+  --slds-c-textarea-color-border: #475569;
+  --slds-c-input-text-color: #ffffff;
+  --slds-c-textarea-text-color: #ffffff;
+  --slds-c-input-label-color: #ffffff;
+  --slds-c-textarea-label-color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  padding: 14px 35px;
+  color: #0f172a;
+  font-weight: 800;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+}
+.btn-success {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 14px 35px;
+  font-weight: 800;
+  border-radius: 50px;
+  cursor: default;
+  transform: scale(1.05);
+}
+.btn-error {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 14px 35px;
+  font-weight: 800;
+  border-radius: 50px;
+  animation: shake 0.5s;
+  cursor: pointer;
+}
+.spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  border-top-color: #000;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.checkmark {
+  margin-right: 8px;
+  font-size: 1.2rem;
+}
+.animate-me {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

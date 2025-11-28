@@ -1,0 +1,46 @@
+<template>
+  <div class="section-wrapper stats-container animate-me">
+    <template if:true={trailheadStats}>
+      <div
+        class="slds-grid slds-wrap slds-grid_align-center slds-grid_vertical-align-center"
+      >
+        <div
+          class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 stat-item slds-p-vertical_medium"
+        >
+          <lightning-icon
+            icon-name="custom:custom48"
+            size="large"
+            variant="inverse"
+            class="slds-m-bottom_small"
+          ></lightning-icon>
+          <div class="stat-val">{trailheadStats.Rank__c}</div>
+          <div class="stat-lbl">CURRENT RANK</div>
+        </div>
+        <div
+          class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 stat-item slds-p-vertical_medium"
+        >
+          <lightning-icon
+            icon-name="standard:reward"
+            size="large"
+            variant="inverse"
+            class="slds-m-bottom_small"
+          ></lightning-icon>
+          <div class="stat-val">{trailheadStats.Total_Badges__c}</div>
+          <div class="stat-lbl">BADGES EARNED</div>
+        </div>
+        <div
+          class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 stat-item slds-p-vertical_medium"
+        >
+          <lightning-icon
+            icon-name="standard:metrics"
+            size="large"
+            variant="inverse"
+            class="slds-m-bottom_small"
+          ></lightning-icon>
+          <div class="stat-val">{trailheadStats.Total_Points__c}</div>
+          <div class="stat-lbl">TOTAL POINTS</div>
+        </div>
+      </div>
+    </template>
+  </div>
+</template>

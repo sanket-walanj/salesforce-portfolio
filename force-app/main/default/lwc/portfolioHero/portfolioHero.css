@@ -1,0 +1,114 @@
+:host {
+  --primary-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --text-gradient: linear-gradient(to right, #22d3ee, #818cf8);
+  --text-main: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-accent: #38bdf8;
+}
+.hero-section {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+  margin-bottom: 2rem;
+}
+.section-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+.hero-title {
+  font-size: 4rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  color: var(--text-main);
+}
+.gradient-text {
+  background: var(--text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-subtitle {
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-family: monospace;
+}
+.location-text {
+  color: var(--text-accent);
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+.bio-text {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 90%;
+  margin-bottom: 3rem;
+}
+.profile-img {
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #1e293b;
+  box-shadow: 0 0 50px rgba(6, 182, 212, 0.2);
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+.btn-primary {
+  background: var(--primary-gradient);
+  border: none;
+  padding: 14px 35px;
+  color: #0f172a;
+  font-weight: 800;
+  border-radius: 50px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+}
+.cursor {
+  animation: blink 1s infinite;
+  color: var(--text-accent);
+}
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.animate-me {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

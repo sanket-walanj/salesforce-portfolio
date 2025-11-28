@@ -1,0 +1,48 @@
+:host {
+  --primary-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --text-main: #f8fafc;
+  --text-accent: #38bdf8;
+}
+.section-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+.stats-container {
+  background: #172033;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin: 4rem auto;
+  border-radius: 20px;
+  max-width: 1000px;
+  padding: 3rem 0;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.stat-val {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+}
+.stat-lbl {
+  color: var(--text-accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+.animate-me {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

@@ -1,0 +1,71 @@
+:host {
+  --primary-gradient: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  --bg-card: #1e293b;
+  --bg-card-hover: #334155;
+  --text-main: #f8fafc;
+  --text-accent: #38bdf8;
+  --glow-soft: 0 0 20px rgba(56, 189, 248, 0.1);
+}
+.section-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+.title-underline {
+  width: 60px;
+  height: 4px;
+  background: var(--primary-gradient);
+  margin: 0 auto 4rem auto;
+  border-radius: 4px;
+}
+.skill-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  height: 100%;
+  cursor: pointer;
+}
+.skill-card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-7px);
+  border-color: var(--text-accent);
+  box-shadow: var(--glow-soft);
+}
+.skill-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 1rem;
+  color: var(--text-main);
+}
+.bar-bg {
+  background: #0f172a;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+.bar-fill {
+  background: var(--primary-gradient);
+  height: 100%;
+  border-radius: 3px;
+}
+.animate-me {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}

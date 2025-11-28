@@ -1,0 +1,40 @@
+<template>
+  <div class="section-wrapper">
+    <h2 class="section-title animate-me">Technical Arsenal</h2>
+    <div class="title-underline animate-me"></div>
+    <div class="slds-grid slds-wrap slds-gutters_large slds-grid_align-center">
+      <template for:each={skills} for:item="skill">
+        <div
+          key={skill.Id}
+          class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_large animate-me"
+        >
+          <div
+            class="skill-card cursor-pointer"
+            onclick={handleSkillClick}
+            data-tech={skill.Name}
+          >
+            <lightning-icon
+              icon-name={skill.Icon_Name__c}
+              size="medium"
+              variant="inverse"
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                padding: 10px;
+                border-radius: 12px;
+              "
+            ></lightning-icon>
+            <div class="skill-name">{skill.Name}</div>
+            <div
+              class="slds-text-body_small slds-text-color_inverse-weak slds-m-bottom_small"
+            >
+              {skill.Type__c}
+            </div>
+            <div class="bar-bg">
+              <div class="bar-fill" style={skill.barStyle}></div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>

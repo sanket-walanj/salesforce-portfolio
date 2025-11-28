@@ -1,0 +1,68 @@
+<template>
+  <div class="section-wrapper">
+    <h2 class="section-title animate-me">Featured Work</h2>
+    <div class="title-underline animate-me"></div>
+    <div
+      class="filter-container slds-text-align_center slds-m-bottom_large animate-me"
+    >
+      <button
+        class="filter-btn active"
+        data-filter="All"
+        onclick={handleManualFilter}
+      >
+        All
+      </button>
+      <button class="filter-btn" data-filter="LWC" onclick={handleManualFilter}>
+        LWC
+      </button>
+      <button
+        class="filter-btn"
+        data-filter="Apex"
+        onclick={handleManualFilter}
+      >
+        Apex
+      </button>
+      <button
+        class="filter-btn"
+        data-filter="Integration"
+        onclick={handleManualFilter}
+      >
+        Integration
+      </button>
+    </div>
+    <div class="slds-grid slds-wrap slds-gutters_large">
+      <template for:each={filteredProjects} for:item="proj">
+        <div
+          key={proj.Id}
+          class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3 slds-m-bottom_large animate-me fade-in"
+        >
+          <div class="project-card">
+            <div class="project-content">
+              <h3 class="project-title">{proj.Name}</h3>
+              <div class="slds-m-bottom_medium">
+                <template for:each={proj.techStack} for:item="tech">
+                  <span key={tech} class="tech-tag">{tech}</span>
+                </template>
+              </div>
+              <div class="project-desc">
+                <lightning-formatted-rich-text
+                  value={proj.Description__c}
+                ></lightning-formatted-rich-text>
+              </div>
+              <div class="slds-m-top_auto">
+                <button
+                  class="btn-primary"
+                  style="font-size: 0.8rem; padding: 10px 24px"
+                  onclick={handleRepoClick}
+                  data-url={proj.Repository_URL__c}
+                >
+                  View Code
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,43 @@
+<template>
+  <div class="hero-section">
+    <div
+      class="section-wrapper slds-grid slds-wrap slds-grid_vertical-align-center"
+    >
+      <div
+        class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 hero-content animate-me"
+      >
+        <h1 class="hero-title">
+          Hi, I'm <br /><span class="gradient-text">{userName}</span>
+        </h1>
+        <h2 class="hero-subtitle">
+          &lt; <span class="gradient-text">{currentText}</span
+          ><span class="cursor">|</span> /&gt;
+        </h2>
+        <template if:true={location}>
+          <p class="location-text">
+            <lightning-icon
+              icon-name="utility:checkin"
+              size="x-small"
+              variant="inverse"
+              class="slds-m-right_small"
+            ></lightning-icon>
+            Visiting from {location}
+          </p>
+        </template>
+        <p class="bio-text">{bio}</p>
+        <div class="btn-group">
+          <a href={resumeUrl} target="_blank"
+            ><button class="btn-primary">Download Resume</button></a
+          >
+        </div>
+      </div>
+      <div
+        class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-text-align_center"
+      >
+        <div class="profile-img-container animate-me">
+          <img src={profileImageUrl} class="profile-img" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
