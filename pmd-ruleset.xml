@@ -11,9 +11,10 @@
     </description>
 
     <rule ref="category/apex/performance.xml/AvoidSoqlInLoops" />
-    <rule ref="category/apex/performance.xml/AvoidDmlInLoops" />
     <rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" />
     
+    <rule ref="category/apex/bestpractices.xml/AvoidDmlInLoops" />
+
     <rule ref="category/apex/security.xml/ApexSOQLInjection" />
     <rule ref="category/apex/security.xml/ApexXSSFromURLParam" />
 

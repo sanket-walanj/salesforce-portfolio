@@ -135,6 +135,7 @@ export default class PortfolioMain extends LightningElement {
         if (data.city) this.location = `${data.city}, ${data.country_name}`;
         this.trackVisitor(data.ip);
       })
+      // eslint-disable-next-line no-console
       .catch(() => {
         this.trackVisitor("Unknown");
       });
@@ -154,19 +155,21 @@ export default class PortfolioMain extends LightningElement {
 
     logVisit({ browser: browser, device: device, ipAddress: ipAddress })
       .then(() => sessionStorage.setItem("visited", "true"))
+      // eslint-disable-next-line no-console
       .catch(() => {
         // Silently fail
       });
   }
 
+  // FIXED: Removed 'error' from destructuring
   @wire(getSkills)
-  wiredSkills({ error, data }) {
+  wiredSkills({ data }) {
     if (data) this.skills = data;
-    // removed unused error check or handle it if you want logging
   }
 
+  // FIXED: Removed 'error' from destructuring
   @wire(getProjects)
-  wiredProjects({ error, data }) {
+  wiredProjects({ data }) {
     if (data) {
       this.projects = data.map((proj) => ({
         ...proj,
@@ -178,8 +181,9 @@ export default class PortfolioMain extends LightningElement {
     }
   }
 
+  // FIXED: Removed 'error' from destructuring
   @wire(getTrailheadStats)
-  wiredStats({ error, data }) {
+  wiredStats({ data }) {
     if (data) {
       this.trailheadStats = data;
     }
@@ -244,6 +248,7 @@ export default class PortfolioMain extends LightningElement {
           this.btnClass = "btn-primary";
         }, 4000);
       })
+      // eslint-disable-next-line no-console
       .catch(() => {
         this.isSending = false;
         this.btnLabel = "Error. Try Again.";
