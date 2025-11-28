@@ -2,7 +2,7 @@ import { LightningElement, wire, api, track } from "lwc";
 import getSkills from "@salesforce/apex/PortfolioController.getSkills";
 import getProjects from "@salesforce/apex/PortfolioController.getProjects";
 import getTrailheadStats from "@salesforce/apex/PortfolioController.getTrailheadStats";
-import logVisit from "@salesforce/apex/PortfolioController.logVisit"; // ADDED TRACKING IMPORT
+import logVisit from "@salesforce/apex/PortfolioController.logVisit";
 import createLead from "@salesforce/apex/PortfolioController.createLead";
 
 export default class PortfolioMain extends LightningElement {
@@ -22,7 +22,6 @@ export default class PortfolioMain extends LightningElement {
   projects = [];
   filteredProjects = [];
   trailheadStats;
-  superbadges = [];
   activeFilter = "All";
 
   // --- BUTTON STATES ---
@@ -31,7 +30,7 @@ export default class PortfolioMain extends LightningElement {
   btnLabel = "Send Message";
   btnClass = "btn-primary";
 
-  // --- TIMELINE (Updated from Resume) ---
+  // --- TIMELINE ---
   workHistory = [
     {
       id: 1,
@@ -73,6 +72,31 @@ export default class PortfolioMain extends LightningElement {
   connectedCallback() {
     this.handleTypewriter();
     this.fetchAndTrack();
+  }
+
+  renderedCallback() {
+    // Scroll Animation Logic
+    const elementsToAnimate = this.template.querySelectorAll(
+      ".animate-me:not(.observed)"
+    );
+    if (elementsToAnimate.length > 0) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("animate-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      elementsToAnimate.forEach((el) => {
+        observer.observe(el);
+        el.classList.add("observed");
+      });
+    }
   }
 
   handleTypewriter() {
@@ -155,16 +179,7 @@ export default class PortfolioMain extends LightningElement {
 
   @wire(getTrailheadStats)
   wiredStats({ error, data }) {
-    if (data) {
-      this.trailheadStats = data;
-      if (data.Superbadges__c) {
-        try {
-          this.superbadges = JSON.parse(data.Superbadges__c);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    }
+    if (data) this.trailheadStats = data;
   }
 
   handleFilter(event) {

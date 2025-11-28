@@ -5,7 +5,7 @@
         class="section-wrapper slds-grid slds-wrap slds-grid_vertical-align-center"
       >
         <div
-          class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 hero-content"
+          class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 hero-content animate-me"
         >
           <h1 class="hero-title">
             Hi, I'm <br />
@@ -41,7 +41,7 @@
         <div
           class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-text-align_center"
         >
-          <div class="profile-img-container">
+          <div class="profile-img-container animate-me">
             <img src={profileImageUrl} class="profile-img" />
           </div>
         </div>
@@ -49,8 +49,8 @@
     </div>
 
     <div class="section-wrapper">
-      <h2 class="section-title">Technical Arsenal</h2>
-      <div class="title-underline"></div>
+      <h2 class="section-title animate-me">Technical Arsenal</h2>
+      <div class="title-underline animate-me"></div>
 
       <div
         class="slds-grid slds-wrap slds-gutters_large slds-grid_align-center"
@@ -58,7 +58,7 @@
         <template for:each={skills} for:item="skill">
           <div
             key={skill.Id}
-            class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_large"
+            class="slds-col slds-size_1-of-2 slds-medium-size_1-of-4 slds-m-bottom_large animate-me"
           >
             <div class="skill-card">
               <lightning-icon
@@ -86,7 +86,7 @@
       </div>
     </div>
 
-    <div class="section-wrapper stats-container">
+    <div class="section-wrapper stats-container animate-me">
       <template if:true={trailheadStats}>
         <div
           class="slds-grid slds-wrap slds-grid_align-center slds-grid_vertical-align-center"
@@ -134,10 +134,12 @@
     </div>
 
     <div class="section-wrapper">
-      <h2 class="section-title">Featured Work</h2>
-      <div class="title-underline"></div>
+      <h2 class="section-title animate-me">Featured Work</h2>
+      <div class="title-underline animate-me"></div>
 
-      <div class="filter-container slds-text-align_center slds-m-bottom_large">
+      <div
+        class="filter-container slds-text-align_center slds-m-bottom_large animate-me"
+      >
         <button
           class="filter-btn active"
           data-filter="All"
@@ -197,21 +199,28 @@
     </div>
 
     <div class="section-wrapper">
-      <h2 class="section-title">Experience</h2>
-      <div class="title-underline"></div>
+      <h2 class="section-title animate-me">Experience</h2>
+      <div class="title-underline animate-me"></div>
       <div class="timeline">
         <template for:each={workHistory} for:item="job">
-          <div key={job.id} class="timeline-item">
+          <div key={job.id} class="timeline-item animate-me">
             <div class="timeline-dot"></div>
+
             <div class="timeline-content">
               <div
                 class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small"
               >
-                <div class="timeline-role">{job.role}</div>
+                <div>
+                  <div class="timeline-role">{job.role}</div>
+                  <div class="timeline-date">
+                    {job.company} | {job.duration}
+                  </div>
+                </div>
               </div>
-              <div class="timeline-date">{job.company} | {job.duration}</div>
+
               <p class="timeline-desc">{job.description}</p>
-              <div class="slds-m-top_small">
+
+              <div class="slds-m-top_medium">
                 <template for:each={job.tech} for:item="t">
                   <span key={t} class="tech-tag" style="font-size: 0.7rem"
                     >{t}</span
@@ -224,8 +233,8 @@
       </div>
     </div>
 
-    <div class="contact-section">
-      <h2 class="section-title">Let's Connect</h2>
+    <div class="contact-section animate-me">
+      <h2 class="section-title" style="color: white">Let's Connect</h2>
       <div class="title-underline"></div>
 
       <div class="contact-card">
@@ -277,14 +286,12 @@
             onclick={handleContactSubmit}
             disabled={isSending}
           >
-            <template if:true={isSending}>
-              <span class="spinner"></span>
-            </template>
-
-            <template if:true={isSuccess}>
-              <span class="checkmark">✔</span>
-            </template>
-
+            <template if:true={isSending}
+              ><span class="spinner"></span
+            ></template>
+            <template if:true={isSuccess}
+              ><span class="checkmark">✔</span></template
+            >
             {btnLabel}
           </button>
         </div>
