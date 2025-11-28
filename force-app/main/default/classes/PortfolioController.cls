@@ -4,6 +4,7 @@ public without sharing class PortfolioController {
     return [
       SELECT Id, Name, Type__c, Proficiency__c, Icon_Name__c
       FROM Portfolio_Skill__c
+      WITH USER_MODE
       ORDER BY Proficiency__c DESC
     ];
   }
@@ -13,6 +14,7 @@ public without sharing class PortfolioController {
     return [
       SELECT Id, Name, Description__c, Tech_Stack__c, Repository_URL__c
       FROM Portfolio_Project__c
+      WITH USER_MODE
     ];
   }
 
@@ -21,6 +23,7 @@ public without sharing class PortfolioController {
     List<Trailhead_Data__c> data = [
       SELECT Id, Total_Badges__c, Total_Points__c, Rank__c, Superbadges__c
       FROM Trailhead_Data__c
+      WITH USER_MODE
       LIMIT 1
     ];
     return data.isEmpty() ? null : data[0];
@@ -42,9 +45,10 @@ public without sharing class PortfolioController {
       newLead.Company = company != null ? company : 'Portfolio Visitor';
       newLead.Description = message;
       newLead.LeadSource = 'Portfolio WebApp';
-      insert newLead;
+
+      // This requires API v57.0+
+      insert as user newLead;
     } catch (Exception e) {
-      // Throw exception to LWC instead of swallowing it
       throw new AuraHandledException('Error capturing lead: ' + e.getMessage());
     }
   }
