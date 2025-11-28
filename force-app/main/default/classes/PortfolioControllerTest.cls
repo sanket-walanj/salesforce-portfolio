@@ -2,7 +2,6 @@
 private class PortfolioControllerTest {
   @testSetup
   static void setupData() {
-    // Create User for RunAs
     Profile p = [SELECT Id FROM Profile WHERE Name = 'System Administrator'];
     User u = new User(
       Alias = 'standt',
@@ -18,7 +17,6 @@ private class PortfolioControllerTest {
     insert u;
 
     System.runAs(u) {
-      // Create Skills
       Portfolio_Skill__c skill = new Portfolio_Skill__c(
         Name = 'Apex',
         Proficiency__c = 90,
@@ -27,7 +25,6 @@ private class PortfolioControllerTest {
       );
       insert skill;
 
-      // Create Project
       Portfolio_Project__c project = new Portfolio_Project__c(
         Name = 'Test Project',
         Description__c = 'Test Desc',
@@ -36,7 +33,6 @@ private class PortfolioControllerTest {
       );
       insert project;
 
-      // Create Trailhead Data
       Trailhead_Data__c th = new Trailhead_Data__c(
         Total_Badges__c = 100,
         Rank__c = 'Ranger'
@@ -113,7 +109,13 @@ private class PortfolioControllerTest {
       Test.stopTest();
 
       Lead l = [SELECT Id FROM Lead WHERE Email = 'john@test.com' LIMIT 1];
-      System.assertNotEquals(null, l);
+
+      // FIX: Added the 3rd parameter (Message)
+      System.assertNotEquals(
+        null,
+        l,
+        'Lead record should be created successfully'
+      );
     }
   }
 }

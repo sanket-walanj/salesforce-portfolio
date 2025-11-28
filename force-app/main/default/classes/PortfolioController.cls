@@ -46,8 +46,8 @@ public without sharing class PortfolioController {
       newLead.Description = message;
       newLead.LeadSource = 'Portfolio WebApp';
 
-      // This requires API v57.0+
-      insert as user newLead;
+      // FIX: Use Database method to avoid PMD parser crash
+      Database.insert(newLead, AccessLevel.USER_MODE);
     } catch (Exception e) {
       throw new AuraHandledException('Error capturing lead: ' + e.getMessage());
     }
