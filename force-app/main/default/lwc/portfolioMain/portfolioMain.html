@@ -203,9 +203,22 @@
         <template for:each={workHistory} for:item="job">
           <div key={job.id} class="timeline-item">
             <div class="timeline-dot"></div>
-            <div class="timeline-role">{job.role}</div>
-            <div class="timeline-date">{job.company} | {job.duration}</div>
-            <p class="timeline-desc">{job.description}</p>
+            <div class="timeline-content">
+              <div
+                class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small"
+              >
+                <div class="timeline-role">{job.role}</div>
+              </div>
+              <div class="timeline-date">{job.company} | {job.duration}</div>
+              <p class="timeline-desc">{job.description}</p>
+              <div class="slds-m-top_small">
+                <template for:each={job.tech} for:item="t">
+                  <span key={t} class="tech-tag" style="font-size: 0.7rem"
+                    >{t}</span
+                  >
+                </template>
+              </div>
+            </div>
           </div>
         </template>
       </div>
@@ -257,9 +270,22 @@
             ></lightning-textarea>
           </div>
         </div>
+
         <div class="slds-text-align_center slds-m-top_medium">
-          <button class="btn-primary" onclick={handleContactSubmit}>
-            Send Message
+          <button
+            class={btnClass}
+            onclick={handleContactSubmit}
+            disabled={isSending}
+          >
+            <template if:true={isSending}>
+              <span class="spinner"></span>
+            </template>
+
+            <template if:true={isSuccess}>
+              <span class="checkmark">✔</span>
+            </template>
+
+            {btnLabel}
           </button>
         </div>
       </div>

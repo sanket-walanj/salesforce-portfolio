@@ -2,9 +2,8 @@ import { LightningElement, wire, api, track } from "lwc";
 import getSkills from "@salesforce/apex/PortfolioController.getSkills";
 import getProjects from "@salesforce/apex/PortfolioController.getProjects";
 import getTrailheadStats from "@salesforce/apex/PortfolioController.getTrailheadStats";
+import logVisit from "@salesforce/apex/PortfolioController.logVisit"; // ADDED TRACKING IMPORT
 import createLead from "@salesforce/apex/PortfolioController.createLead";
-import { ShowToastEvent } from "lightning/platformShowToastEvent";
-import logVisit from "@salesforce/apex/PortfolioController.logVisit";
 
 export default class PortfolioMain extends LightningElement {
   @api userName = "Your Name";
@@ -26,7 +25,13 @@ export default class PortfolioMain extends LightningElement {
   superbadges = [];
   activeFilter = "All";
 
-  // --- TIMELINE DATA ---
+  // --- BUTTON STATES ---
+  @track isSending = false;
+  @track isSuccess = false;
+  btnLabel = "Send Message";
+  btnClass = "btn-primary";
+
+  // --- TIMELINE (Updated from Resume) ---
   workHistory = [
     {
       id: 1,
@@ -100,6 +105,36 @@ export default class PortfolioMain extends LightningElement {
     }, delta);
   }
 
+  fetchAndTrack() {
+    fetch("https://ipapi.co/json/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.city) this.location = `${data.city}, ${data.country_name}`;
+        this.trackVisitor(data.ip);
+      })
+      .catch((e) => {
+        console.log("Loc error", e);
+        this.trackVisitor("Unknown");
+      });
+  }
+
+  trackVisitor(ipAddress) {
+    if (
+      window.location.hostname.includes("sitepreview") ||
+      sessionStorage.getItem("visited")
+    ) {
+      return;
+    }
+    const browser = navigator.userAgent;
+    const device = /Mobile|Android|iPhone/i.test(navigator.userAgent)
+      ? "Mobile"
+      : "Desktop";
+
+    logVisit({ browser: browser, device: device, ipAddress: ipAddress })
+      .then(() => sessionStorage.setItem("visited", "true"))
+      .catch((e) => console.error(e));
+  }
+
   @wire(getSkills)
   wiredSkills({ error, data }) {
     if (data) this.skills = data;
@@ -161,71 +196,38 @@ export default class PortfolioMain extends LightningElement {
   handleContactSubmit() {
     const { firstName, lastName, email, company, message } = this.formData;
     if (!lastName || !email) {
-      this.showToast("Error", "Name and Email required", "error");
+      this.btnLabel = "Name & Email Required!";
+      this.btnClass = "btn-error";
+      setTimeout(() => {
+        this.btnLabel = "Send Message";
+        this.btnClass = "btn-primary";
+      }, 3000);
       return;
     }
 
+    this.isSending = true;
+    this.btnLabel = "Sending...";
+
     createLead({ firstName, lastName, email, company, message })
       .then(() => {
-        this.showToast("Success", "Message Sent!", "success");
+        this.isSending = false;
+        this.isSuccess = true;
+        this.btnLabel = "Sent Successfully!";
+        this.btnClass = "btn-success";
         this.template
           .querySelectorAll("lightning-input, lightning-textarea")
           .forEach((el) => (el.value = null));
         this.formData = {};
+        setTimeout(() => {
+          this.isSuccess = false;
+          this.btnLabel = "Send Message";
+          this.btnClass = "btn-primary";
+        }, 4000);
       })
       .catch((error) => {
-        this.showToast("Error", "Failed to send.", "error");
-      });
-  }
-
-  showToast(title, message, variant) {
-    this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
-  }
-
-  // Combine Location Fetch and Tracking into one flow to ensure we have the IP
-  fetchAndTrack() {
-    // 1. Fetch IP and Location data
-    fetch("https://ipapi.co/json/")
-      .then((res) => res.json())
-      .then((data) => {
-        // Set Location for Hero Section
-        console.log("Visitor's Data: ", data);
-        if (data.city) {
-          this.location = `${data.city}, ${data.country_name}`;
-        }
-
-        // 2. Now Track the Visitor using the IP we just got
-        this.trackVisitor(data.ip);
-      })
-      .catch((e) => {
-        console.log("Loc error", e);
-        // Even if location fails, try to track without IP
-        this.trackVisitor("Unknown");
-      });
-  }
-
-  trackVisitor(ipAddress) {
-    // Anti-spam check (Builder or Repeat Visit)
-    if (
-      window.location.hostname.includes("sitepreview") ||
-      sessionStorage.getItem("visited")
-    ) {
-      return;
-    }
-
-    const browser = navigator.userAgent;
-    const device = /Mobile|Android|iPhone/i.test(navigator.userAgent)
-      ? "Mobile"
-      : "Desktop";
-
-    // 3. Call Apex with the IP
-    logVisit({ browser: browser, device: device, ipAddress: ipAddress })
-      .then(() => {
-        console.log("Visitor logged with IP:", ipAddress);
-        sessionStorage.setItem("visited", "true");
-      })
-      .catch((error) => {
-        console.error("Tracking Error:", error);
+        this.isSending = false;
+        this.btnLabel = "Error. Try Again.";
+        this.btnClass = "btn-error";
       });
   }
 }
