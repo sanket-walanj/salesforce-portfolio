@@ -67,8 +67,7 @@ export default class PortfolioMain extends LightningElement {
 
   connectedCallback() {
     this.handleTypewriter();
-    this.fetchLocation();
-    this.trackVisitor();
+    this.fetchAndTrack();
   }
 
   handleTypewriter() {
@@ -99,15 +98,6 @@ export default class PortfolioMain extends LightningElement {
     setTimeout(() => {
       this.handleTypewriter();
     }, delta);
-  }
-
-  fetchLocation() {
-    fetch("https://ipapi.co/json/")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.city) this.location = `${data.city}, ${data.country_name}`;
-      })
-      .catch((e) => console.log("Loc error", e));
   }
 
   @wire(getSkills)
@@ -192,41 +182,50 @@ export default class PortfolioMain extends LightningElement {
     this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
   }
 
-  trackVisitor() {
-    console.log("🔍 TRACKER: Function started..."); // 1. Verify function runs
+  // Combine Location Fetch and Tracking into one flow to ensure we have the IP
+  fetchAndTrack() {
+    // 1. Fetch IP and Location data
+    fetch("https://ipapi.co/json/")
+      .then((res) => res.json())
+      .then((data) => {
+        // Set Location for Hero Section
+        console.log("Visitor's Data: ", data);
+        if (data.city) {
+          this.location = `${data.city}, ${data.country_name}`;
+        }
 
-    // Check 1: Are we in the Builder?
+        // 2. Now Track the Visitor using the IP we just got
+        this.trackVisitor(data.ip);
+      })
+      .catch((e) => {
+        console.log("Loc error", e);
+        // Even if location fails, try to track without IP
+        this.trackVisitor("Unknown");
+      });
+  }
+
+  trackVisitor(ipAddress) {
+    // Anti-spam check (Builder or Repeat Visit)
     if (
       window.location.hostname.includes("sitepreview") ||
-      window.location.hostname.includes("livepreview")
+      sessionStorage.getItem("visited")
     ) {
-      console.log(
-        "⚠️ TRACKER: Skipped because we are in Builder/Preview mode."
-      );
       return;
     }
 
-    // Check 2: Have we visited before?
-    // (I commented out the return so it runs ANYWAY for testing)
-    if (sessionStorage.getItem("visited")) {
-      console.log(
-        "ℹ️ TRACKER: Session already exists, but forcing log for debug..."
-      );
-      // return; <--- Commented out to FORCE the log
-    }
+    const browser = navigator.userAgent;
+    const device = /Mobile|Android|iPhone/i.test(navigator.userAgent)
+      ? "Mobile"
+      : "Desktop";
 
-    console.log("🚀 TRACKER: Calling Apex now...");
-
-    logVisit({ browser: navigator.userAgent, device: "Desktop" })
+    // 3. Call Apex with the IP
+    logVisit({ browser: browser, device: device, ipAddress: ipAddress })
       .then(() => {
-        console.log("✅ TRACKER: Success! Event published to Salesforce.");
+        console.log("Visitor logged with IP:", ipAddress);
         sessionStorage.setItem("visited", "true");
       })
       .catch((error) => {
-        console.error(
-          "❌ TRACKER: Apex Callout Failed:",
-          JSON.stringify(error)
-        );
+        console.error("Tracking Error:", error);
       });
   }
 }

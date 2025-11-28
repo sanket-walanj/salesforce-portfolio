@@ -58,25 +58,12 @@ public without sharing class PortfolioController {
     }
   }
 
-  // 6. Visitor Tracking (Publish Platform Event)
+  // 6. Visitor Tracking - Publish Platform Event
   @AuraEnabled
-  public static void logVisit(String browser, String device) {
-    // Attempt to get IP (Works best in Visualforce, but we try standard headers)
-    String ipAddress = 'Unknown';
-    try {
-      Map<String, String> headers = ApexPages.currentPage().getHeaders();
-      if (headers != null) {
-        ipAddress = headers.get('X-Salesforce-SIP');
-        if (ipAddress == null)
-          ipAddress = headers.get('True-Client-IP');
-      }
-    } catch (Exception e) {
-      System.debug('IP Fetch Error: ' + e.getMessage());
-    }
-
+  public static void logVisit(String browser, String device, String ipAddress) {
     // Publish Event
     Visitor_Notification__e event = new Visitor_Notification__e(
-      IP_Address__c = ipAddress,
+      IP_Address__c = ipAddress, // Use the passed value
       Browser__c = browser,
       Device__c = device
     );
