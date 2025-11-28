@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<ruleset
+  name="Portfolio Apex Rules"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
+>
+
+    <description>
+        Standard Apex Rules for Portfolio Project
+    </description>
+
+    <rule ref="category/apex/bestpractices.xml/AvoidSoqlInLoops" />
+    <rule ref="category/apex/bestpractices.xml/AvoidDmlInLoops" />
+    
+    <rule ref="category/apex/security.xml/ApexSOQLInjection" />
+    <rule ref="category/apex/security.xml/ApexXSSFromURLParam" />
+
+    <rule ref="category/apex/errorprone.xml/EmptyCatchBlock" />
+    
+    <rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" />
+</ruleset>
