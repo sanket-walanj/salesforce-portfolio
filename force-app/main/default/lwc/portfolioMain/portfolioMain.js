@@ -24,13 +24,12 @@ export default class PortfolioMain extends LightningElement {
   trailheadStats;
   activeFilter = "All";
 
-  // --- BUTTON STATES ---
   @track isSending = false;
   @track isSuccess = false;
   btnLabel = "Send Message";
   btnClass = "btn-primary";
 
-  // --- TIMELINE ---
+  // Timeline Data
   workHistory = [
     {
       id: 1,
@@ -75,7 +74,6 @@ export default class PortfolioMain extends LightningElement {
   }
 
   renderedCallback() {
-    // Scroll Animation Logic
     const elementsToAnimate = this.template.querySelectorAll(
       ".animate-me:not(.observed)"
     );
@@ -136,8 +134,9 @@ export default class PortfolioMain extends LightningElement {
         if (data.city) this.location = `${data.city}, ${data.country_name}`;
         this.trackVisitor(data.ip);
       })
-      .catch((e) => {
-        console.log("Loc error", e);
+      // eslint-disable-next-line no-console
+      .catch(() => {
+        // Silently fail location fetch
         this.trackVisitor("Unknown");
       });
   }
@@ -156,7 +155,10 @@ export default class PortfolioMain extends LightningElement {
 
     logVisit({ browser: browser, device: device, ipAddress: ipAddress })
       .then(() => sessionStorage.setItem("visited", "true"))
-      .catch((e) => console.error(e));
+      // eslint-disable-next-line no-console
+      .catch(() => {
+        // Silently fail tracking
+      });
   }
 
   @wire(getSkills)
@@ -179,7 +181,9 @@ export default class PortfolioMain extends LightningElement {
 
   @wire(getTrailheadStats)
   wiredStats({ error, data }) {
-    if (data) this.trailheadStats = data;
+    if (data) {
+      this.trailheadStats = data;
+    }
   }
 
   handleFilter(event) {
@@ -239,7 +243,8 @@ export default class PortfolioMain extends LightningElement {
           this.btnClass = "btn-primary";
         }, 4000);
       })
-      .catch((error) => {
+      // eslint-disable-next-line no-console
+      .catch(() => {
         this.isSending = false;
         this.btnLabel = "Error. Try Again.";
         this.btnClass = "btn-error";
