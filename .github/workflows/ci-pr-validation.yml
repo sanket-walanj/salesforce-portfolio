@@ -1,6 +1,6 @@
-name: Salesforce CI/CD - Static Code Analysis
+name: Salesforce CI/CD - Auto Deploy
 
-# Trigger the workflow on push to main or pull requests
+# Trigger on push to main
 on:
   push:
     branches: [main]
@@ -8,44 +8,60 @@ on:
     branches: [main]
 
 jobs:
-  # JOB 1: LWC & Javascript Analysis (ESLint)
+  # JOB 1: LWC Linting
   lint-lwc:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: "npm"
-
       - name: Install Dependencies
         run: npm ci
-
-      - name: Run ESLint (LWC)
+      - name: Run ESLint
         run: npx eslint force-app/main/default/lwc/**
 
-  # JOB 2: Apex Analysis (PMD)
+  # JOB 2: Apex Scanning
   scan-apex:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
-      - name: Setup Java (Required for PMD)
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: "temurin"
           java-version: "11"
-
       - name: Download PMD
         run: |
           wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.55.0/pmd-bin-6.55.0.zip
           unzip pmd-bin-6.55.0.zip
           mv pmd-bin-6.55.0 pmd
-
-      - name: Run PMD Scan (Apex)
+      - name: Run PMD Scan
         run: |
           ./pmd/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f text
+
+  # JOB 3: Auto-Deploy (Only runs if previous jobs pass)
+  deploy-to-org:
+    needs: [lint-lwc, scan-apex]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' # Only deploy when pushing to main branch
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Salesforce CLI
+        run: npm install @salesforce/cli --global
+
+      - name: Authenticate with Org
+        # We write the secret to a file and authorize using that file
+        run: |
+          echo "${{ secrets.SFDX_AUTH_URL }}" > auth_url.txt
+          sf org login sfdx-url --sfdx-url-file auth_url.txt --set-default --alias production-org
+          rm auth_url.txt
+
+      - name: Deploy Code
+        run: sf project deploy start --target-org production-org --wait 10
