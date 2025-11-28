@@ -14,7 +14,15 @@
 
     <rule ref="category/apex/security.xml" />
 
-    <rule ref="category/apex/errorprone.xml" />
+    <rule ref="category/apex/errorprone.xml/EmptyCatchBlock">
+        <properties>
+            <property name="allowCommentedBlocks" value="true" />
+        </properties>
+    </rule>
+    
+    <rule ref="category/apex/errorprone.xml">
+        <exclude name="EmptyCatchBlock" />
+    </rule>
     
     <rule ref="category/apex/bestpractices.xml">
         <exclude name="ApexUnitTestClassShouldHaveAsserts" />
