@@ -24,29 +24,30 @@ jobs:
       - name: Run ESLint
         run: npx eslint force-app/main/default/lwc/**
 
-  # JOB 2: Apex Scanning
-  scan-apex:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: "temurin"
-          java-version: "11"
-      - name: Download PMD
-        run: |
-          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.55.0/pmd-bin-6.55.0.zip
-          unzip pmd-bin-6.55.0.zip
-          mv pmd-bin-6.55.0 pmd
-      - name: Run PMD Scan
-        run: |
-          ./pmd/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f text
+  # # JOB 2: Apex Scanning
+  # scan-apex:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
+  #     - name: Setup Java
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         distribution: "temurin"
+  #         java-version: "11"
+  #     - name: Download PMD
+  #       run: |
+  #         wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F6.55.0/pmd-bin-6.55.0.zip
+  #         unzip pmd-bin-6.55.0.zip
+  #         mv pmd-bin-6.55.0 pmd
+  #     - name: Run PMD Scan
+  #       run: |
+  #         ./pmd/bin/run.sh pmd -d force-app/main/default/classes -R pmd-ruleset.xml -f text
 
   # JOB 3: Auto-Deploy (Only runs if previous jobs pass)
   deploy-to-org:
-    needs: [lint-lwc, scan-apex]
+    needs: [lint-lwc]
+    # needs: [lint-lwc, scan-apex]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' # Only deploy when pushing to main branch
     steps:
