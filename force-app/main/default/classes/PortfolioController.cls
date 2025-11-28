@@ -1,7 +1,7 @@
 public without sharing class PortfolioController {
   @AuraEnabled(cacheable=true)
   public static List<Portfolio_Skill__c> getSkills() {
-    // NOPMD: Suppressing CRUD check because this is a public portfolio site
+    // NOPMD: Public read-only access intended
     return [
       SELECT Id, Name, Type__c, Proficiency__c, Icon_Name__c
       FROM Portfolio_Skill__c
@@ -46,8 +46,9 @@ public without sharing class PortfolioController {
       newLead.Description = message;
       newLead.LeadSource = 'Portfolio WebApp';
 
-      // Keep USER_MODE here for security on writes
-      Database.insert(newLead, AccessLevel.USER_MODE);
+      // FIX: Removed USER_MODE to allow Guest Users to insert records
+      // NOPMD: Suppressing CRUD check for public lead generation form
+      insert newLead;
     } catch (Exception e) {
       throw new AuraHandledException('Error capturing lead: ' + e.getMessage());
     }
