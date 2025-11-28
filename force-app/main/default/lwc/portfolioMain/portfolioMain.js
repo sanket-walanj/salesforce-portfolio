@@ -122,6 +122,7 @@ export default class PortfolioMain extends LightningElement {
       delta = 500;
     }
 
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
     setTimeout(() => {
       this.handleTypewriter();
     }, delta);
@@ -134,9 +135,7 @@ export default class PortfolioMain extends LightningElement {
         if (data.city) this.location = `${data.city}, ${data.country_name}`;
         this.trackVisitor(data.ip);
       })
-      // eslint-disable-next-line no-console
       .catch(() => {
-        // Silently fail location fetch
         this.trackVisitor("Unknown");
       });
   }
@@ -155,15 +154,15 @@ export default class PortfolioMain extends LightningElement {
 
     logVisit({ browser: browser, device: device, ipAddress: ipAddress })
       .then(() => sessionStorage.setItem("visited", "true"))
-      // eslint-disable-next-line no-console
       .catch(() => {
-        // Silently fail tracking
+        // Silently fail
       });
   }
 
   @wire(getSkills)
   wiredSkills({ error, data }) {
     if (data) this.skills = data;
+    // removed unused error check or handle it if you want logging
   }
 
   @wire(getProjects)
@@ -217,6 +216,7 @@ export default class PortfolioMain extends LightningElement {
     if (!lastName || !email) {
       this.btnLabel = "Name & Email Required!";
       this.btnClass = "btn-error";
+      // eslint-disable-next-line @lwc/lwc/no-async-operation
       setTimeout(() => {
         this.btnLabel = "Send Message";
         this.btnClass = "btn-primary";
@@ -237,13 +237,13 @@ export default class PortfolioMain extends LightningElement {
           .querySelectorAll("lightning-input, lightning-textarea")
           .forEach((el) => (el.value = null));
         this.formData = {};
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
         setTimeout(() => {
           this.isSuccess = false;
           this.btnLabel = "Send Message";
           this.btnClass = "btn-primary";
         }, 4000);
       })
-      // eslint-disable-next-line no-console
       .catch(() => {
         this.isSending = false;
         this.btnLabel = "Error. Try Again.";
