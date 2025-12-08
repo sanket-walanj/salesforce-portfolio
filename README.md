@@ -1,18 +1,31 @@
-# Salesforce DX Project: Next Steps
+# 🚀 Interactive Salesforce Portfolio
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+A high-performance personal portfolio built entirely on the **Salesforce Platform** using **Experience Cloud (LWR)**.
 
-## How Do You Plan to Deploy Your Changes?
+🔗 **Live Site:** [https://sanky-dev-ed.my.site.com/portfolio](https://sanky-dev-ed.my.site.com/portfolio)
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+## 🏗️ Technical Architecture
 
-## Configure Your Salesforce DX Project
+This project demonstrates **Enterprise-Grade** Salesforce development patterns:
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+- **Frontend:**
+  - **Lightning Web Components (LWC):** Modular architecture using **Lightning Message Service (LMS)** for component communication.
+  - **Responsive Design:** Mobile-first grid system using SLDS and custom CSS.
+  - **Modern UI:** "Deep Space" Dark Mode implementation using CSS Variables and Hooks.
+- **Backend (Apex):**
+  - **Security First:** All queries enforce `WITH USER_MODE` or explicit FLS checks.
+  - **Event-Driven:** Uses **Platform Events** (`Visitor_Notification__e`) to decouple visitor tracking from the UI thread.
+  - **Async Processing:** Triggers handle logging asynchronously to ensure performance.
+- **Automation:**
+  - **Lead Generation:** Custom Apex handler to process "Contact Me" submissions.
+  - **Email Automation:** Org-Wide Email Address integration for auto-responses.
+- **DevOps:**
+  - **CI/CD:** GitHub Actions pipeline for automated deployment.
+  - **Static Analysis:** PMD and ESLint integration for code quality gates.
 
-## Read All About It
+## 🛠️ Key Features implemented
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+1.  **3D Interactive Timeline:** CSS3 animations for experience cards.
+2.  **Real-Time Visitor Tracking:** Captures analytics via Platform Events.
+3.  **Tech Stack Filtering:** JavaScript array manipulation to filter projects instantly.
+4.  **Honeypot Security:** Custom-built spam protection for the contact form.
