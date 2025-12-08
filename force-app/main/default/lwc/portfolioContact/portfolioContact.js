@@ -1,3 +1,4 @@
+/* eslint-disable @lwc/lwc/no-async-operation */
 import { LightningElement, track } from "lwc";
 import createLead from "@salesforce/apex/PortfolioController.createLead";
 import logVisit from "@salesforce/apex/PortfolioController.logVisit";

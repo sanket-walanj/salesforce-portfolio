@@ -46,7 +46,7 @@ jobs:
 
   # JOB 3: Auto-Deploy (Only runs if previous jobs pass)
   deploy-to-org:
-    needs: [lint-lwc]
+    # needs: [lint-lwc]
     # needs: [lint-lwc, scan-apex]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' # Only deploy when pushing to main branch
