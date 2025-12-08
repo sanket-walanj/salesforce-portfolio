@@ -6,7 +6,6 @@ export default class PortfolioHero extends LightningElement {
   @api bio = "I build scalable solutions.";
   @api profileImageUrl;
   @api resumeUrl;
-
   currentText = "";
   isDeleting = false;
   loopNum = 0;
