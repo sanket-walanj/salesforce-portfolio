@@ -39,3 +39,4 @@ export default class PortfolioSkills extends LightningElement {
     publish(this.messageContext, PORTFOLIO_FILTER, payload);
   }
 }
+ 

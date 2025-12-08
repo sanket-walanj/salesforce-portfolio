@@ -73,37 +73,44 @@ export default class PortfolioContact extends LightningElement {
   }
 
   handleContactSubmit() {
-    const { firstName, lastName, email, company, message } = this.formData;
-    if (!lastName || !email) {
-      this.btnLabel = "Name & Email Required!";
-      this.btnClass = "btn-error";
-      // eslint-disable-next-line @lwc/lwc/no-async-operation
-      setTimeout(() => {
-        this.btnLabel = "Send Message";
-        this.btnClass = "btn-primary";
-      }, 3000);
+    // 1. Check Validity of all inputs
+    const allValid = [...this.template.querySelectorAll(".input-field")].reduce(
+      (validSoFar, inputCmp) => {
+        inputCmp.reportValidity();
+        return validSoFar && inputCmp.checkValidity();
+      },
+      true
+    );
+
+    if (!allValid) {
+      // If invalid, stop here. The input fields will show red borders automatically.
       return;
     }
+
+    // 2. Proceed with Logic
     this.isSending = true;
     this.btnLabel = "Sending...";
+
+    const { firstName, lastName, email, company, message } = this.formData;
+
     createLead({ firstName, lastName, email, company, message })
       .then(() => {
         this.isSending = false;
         this.isSuccess = true;
         this.btnLabel = "Sent Successfully!";
         this.btnClass = "btn-success";
+
         this.template
           .querySelectorAll("lightning-input, lightning-textarea")
           .forEach((el) => (el.value = null));
         this.formData = {};
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
+
         setTimeout(() => {
           this.isSuccess = false;
           this.btnLabel = "Send Message";
           this.btnClass = "btn-primary";
         }, 4000);
       })
-      // eslint-disable-next-line no-console
       .catch(() => {
         this.isSending = false;
         this.btnLabel = "Error. Try Again.";

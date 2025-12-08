@@ -2,38 +2,45 @@
   <div class="contact-section animate-me">
     <h2 class="section-title" style="color: white">Let's Connect</h2>
     <div class="title-underline"></div>
+
     <div class="contact-card">
       <div class="slds-grid slds-gutters slds-wrap">
-        <div class="slds-col slds-size_1-of-2">
-          <label class="custom-label">First Name</label
-          ><lightning-input
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+          <label class="custom-label">First Name</label>
+          <lightning-input
             variant="label-hidden"
             name="firstName"
             class="input-field"
             onchange={handleFormChange}
           ></lightning-input>
         </div>
-        <div class="slds-col slds-size_1-of-2">
-          <label class="custom-label">Last Name</label
-          ><lightning-input
+
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+          <label class="custom-label">Last Name</label>
+          <lightning-input
             variant="label-hidden"
             name="lastName"
             class="input-field"
             onchange={handleFormChange}
+            required
           ></lightning-input>
         </div>
+
         <div class="slds-col slds-size_1-of-1">
-          <label class="custom-label">Email</label
-          ><lightning-input
+          <label class="custom-label">Email</label>
+          <lightning-input
             variant="label-hidden"
             name="email"
+            type="email"
             class="input-field"
             onchange={handleFormChange}
+            required
           ></lightning-input>
         </div>
+
         <div class="slds-col slds-size_1-of-1">
-          <label class="custom-label">Message</label
-          ><lightning-textarea
+          <label class="custom-label">Message</label>
+          <lightning-textarea
             variant="label-hidden"
             name="message"
             class="input-field"
@@ -41,6 +48,7 @@
           ></lightning-textarea>
         </div>
       </div>
+
       <div class="slds-text-align_center slds-m-top_medium">
         <button
           class={btnClass}
